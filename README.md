@@ -1,3 +1,14 @@
+<p align="center">
+  <a><img src="https://img.shields.io/github/license/ModularPrintingSystem/IDM"></a>
+  <a><img src="https://img.shields.io/github/stars/ModularPrintingSystem/IDM"></a>
+  <a><img src="https://img.shields.io/github/forks/ModularPrintingSystem/IDM"></a>
+  <a><img src="https://img.shields.io/github/languages/top/ModularPrintingSystem/IDM?logo=gnubash&logoColor=white"></a>
+  <a><img src="https://img.shields.io/github/v/tag/ModularPrintingSystem/IDM"></a>
+  <br />
+  <a><img src="https://img.shields.io/github/last-commit/ModularPrintingSystem/IDM"></a>
+  <a><img src="https://img.shields.io/github/contributors/ModularPrintingSystem/IDM"></a>
+</p>
+
 # IDM Scanner
 
 #### Disclaimer: Usage of this scripts happens at your own risk!
