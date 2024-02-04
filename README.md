@@ -244,7 +244,7 @@ python3 ~/klipper/lib/canboot/flash_can.py -q
 
 Execute the following command:
 ```
-cd ~/katapult/scripts python3 flashtool.py -i can0 -f ~/IDM/Canboot/Canboot_1M.bin -u <found uuid>
+python3 ~/katapult/scripts/flashtool.py -i can0 -f ~/IDM/Canboot/Canboot_1M.bin -u <found uuid>
 ```
 ### 11.2 Update Firmware
 Query IDM Canbus UUID:
@@ -254,7 +254,7 @@ python3 ~/klipper/lib/canboot/flash_can.py -q
 
 Execute the following command:
 ```
-cd ~/katapult/scripts python3 flashtool.py -i can0 -f ~/IDM/Firmware/IDM_CAN_8kib_offset_1M.bin -u <found uuid>
+python3 ~/katapult/scripts/flashtool.py -i can0 -f ~/IDM/Firmware/IDM_CAN_8kib_offset_1M.bin -u <found uuid>
 ```
 
 ## 12. Set to USB
