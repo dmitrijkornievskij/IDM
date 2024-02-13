@@ -11,7 +11,7 @@
 
 # IDM Scanner
 
-#### Disclaimer: Usage of this scripts happens at your own risk!
+#### Disclaimer: Usage of these scripts happens at your own risk!
 
 ## Don’t do anything that is not mentioned in the tutorial, but be sure to do what is mentioned.
 
@@ -28,9 +28,11 @@
 * [9. Enable The Accelerometer](#9-enable-the-accelerometer)
 * [10. Supported Commands](#10-supported-commands)
 * [11. Update IDM](#11-update-idm)
-  - [11.1 Update Canboot](#111-update-canboot)
-  - [11.2 Update Firmware](#112-update-firmware)
-* [12. Set to USB](#12-set-to-usb)
+  - [11.1 Update Can](#111-update-can)
+  - [11.2 Update USB](#112-update-usb)
+* [12. Set Firmware-Type](#12-set-firmware-type)
+  - [12.1 Set to USB](#112-set-to-usb)
+  - [12.2 Set to CAN](#112-set-to-can)
 
 ## 1. Mount IDM
 Mount the IDM-Scanner to your 3D printer toolhead, nominally 2.6mm recessed from the nozzle in Z.
@@ -40,7 +42,7 @@ To ensure accuracy, please install so that the top surface of the sensor coil pl
 [Voron Mount](/STLs/Voron)
 
 ## 2. Install IDM Klipper Module
-Clone ```IDM``` from git and run the install script:
+Clone ```IDM``` from git and run the installation script:
 ```
 cd ~
 git clone https://github.com/ModularPrintingSystem/IDM.git
@@ -160,7 +162,7 @@ Home the machine in X and Y:
 G28 X Y
 ```
 
-Position the nozzle in the centre of the bed. You will nee dto adjust the coordinates for your machine, or feel free to use the web interface
+Position the nozzle in the centre of the bed. You will need to adjust the coordinates for your machine, or feel free to use the web interface
 ```
 G0 <your x-axis center>, <your y-axis center>
 ```
@@ -218,7 +220,7 @@ After the print finishes, the offset can be automatically applied to the model w
 Lowering the ```horizontal_z_move``` in ```z_tilt``` or ```quad_gantry_level``` to below ```trigger_distance``` + ```trigger_dive_threshold``` (default is 3) can make the leveling enter high-speed mode. If it is too low, you can raise the ```trigger_dive_threshold``` appropriately so that ```horizontal_z_move``` can be raised higher.
 
 ## 9. Enable The Accelerometer
-For versions that include an accelerometer (lis2dw), you can enable the accelerometer by adding the following to the configuration:
+For versions that include an accelerometer (```lis2dw```), you can enable the accelerometer by adding the following to the configuration:
 ```
 [lis2dw]
 cs_pin: idm:PA3
@@ -230,36 +232,77 @@ probe_points:
     <your x-axis center>, <your y-axis center>, 20
 ```
 
+## Note
+Before adjusting the z offset, ensure to disable the bed mesh, complete mechanical leveling, and zero once again.
+
+### We also recommend using [[axis_twist_compesation]](https://www.klipper3d.org/Config_Reference.html?h=axis#axis_twist_compensation) to ensure the effectiveness of the mesh bed compensation
+
 ## 10. Supported Commands
 Enter ```IDM``` in the console and press the tab key to see all supported commands.
 
 ## 11. Update IDM
 After IDM is connected to a power source, quickly unplug the power cord and plug it in again. The LED will start to flash slowly, indicating that it has entered canboot. If it is not successful, please repeat this step again.
 
-### 11.1 Update Canboot
+## 11 Update IDM
+### 11.1 Update Can
 Query IDM Canbus UUID:
 ```
 python3 ~/klipper/lib/canboot/flash_can.py -q
 ```
 
+### 11.1.1 Update Bootloader
 Execute the following command:
 ```
 python3 ~/katapult/scripts/flashtool.py -i can0 -f ~/IDM/Canboot/Canboot_1M.bin -u <found uuid>
 ```
-### 11.2 Update Firmware
-Query IDM Canbus UUID:
-```
-python3 ~/klipper/lib/canboot/flash_can.py -q
-```
 
+### 11.1.2 Update Firmware
 Execute the following command:
 ```
 python3 ~/katapult/scripts/flashtool.py -i can0 -f ~/IDM/Firmware/IDM_CAN_8kib_offset_1M.bin -u <found uuid>
 ```
 
-## 12. Set to USB
-If you want to change to USB communication, you can flash the USB firmware:
+### 11.2 Update USB
+Query IDM Serial Port:
 ```
+ls /dev/serial/by-id/*
+```
+
+### 11.2.1 Update Bootloader
+Execute the following command:
+```
+python3 ~/katapult/scripts/flashtool.py -f ~/IDM/Canboot/Canboot_USB.bin -d <found serial port>
+```
+
+### 11.2.2 Update Firmware
+Execute the following command:
+```
+python3 ~/katapult/scripts/flashtool.py -f ~/IDM/Firmware/IDM_USB_8kib_offset.bin -d <found serial port>
+```
+
+## 12. Set Firmware-Type
+### 12.1 Set to USB
+Query IDM Canbus UUID:
+```
+python3 ~/klipper/lib/canboot/flash_can.py -q
+```
+
+Execute the following commands:
+```
+cd ~/katapult/scripts python3 flashtool.py -i can0 -f ~/IDM/Canboot/Canboot_USB.bin -u <found uuid>
 cd ~/katapult/scripts python3 flashtool.py -i can0 -f ~/IDM/Firmware/IDM_USB_8kib_offset.bin -u <found uuid>
 ```
 And solder the mode setting jumper on the back of the IDM to the USB side.
+
+### 12.2 Set to CAN
+Query IDM Serial Port:
+```
+ls /dev/serial/by-id/*
+```
+
+Execute the following commands:
+```
+python3 ~/katapult/scripts/flashtool.py -f ~/IDM/Canboot/Canboot_1M.bin -d <found serial port>
+python3 ~/katapult/scripts/flashtool.py -f ~/IDM/Firmware/IDM_CAN_8kib_offset_1M.bin -d <found serial port>
+```
+And solder the mode setting jumper on the back of the IDM to the CAN side.
