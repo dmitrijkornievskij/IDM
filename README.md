@@ -46,7 +46,8 @@ Clone ```IDM``` from git and run the installation script:
 ```
 cd ~
 git clone https://github.com/ModularPrintingSystem/IDM.git
-./IDM/install.sh
+chmod +x IDM/install.sh
+/IDM/install.sh
 ```
 
 You can advance to the next sections and edit your config files while you wait.
