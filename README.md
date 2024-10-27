@@ -45,7 +45,7 @@ To ensure accuracy, please install so that the top surface of the sensor coil pl
 Clone ```IDM``` from git and run the installation script:
 ```
 cd ~
-git clone https://github.com/dmitrijkornievskij/IDM/IDM.git
+git clone https://github.com/dmitrijkornievskij/IDM.git
 ./IDM/install.sh
 ```
 
